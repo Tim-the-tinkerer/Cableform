@@ -5,6 +5,17 @@ All notable changes to **Cableform** are documented here.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project aims to follow [Semantic Versioning](https://semver.org/).
 
+## [1.0.6] - 2026-08-07
+
+### Added
+
+- **Wire style** picker with three modes:
+  - **As written** — no rewrite
+  - **Wire desk** — light modern caps / STOP / abbreviations
+  - **Period telegram** — commercial wire style: drop articles and soft fillers, STOP/QUERY/COMMA/DASH, QUOTE/UNQUOTE, era abbreviations (PLS, TKS, SOONEST, CFM, RCVD, …)
+- Default for new messages is **Period telegram**
+- `.cblf` stores `wireMode` in metadata (flags bit1 for period; older files still open)
+
 ## [1.0.5] - 2026-08-07
 
 ### Added

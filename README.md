@@ -6,7 +6,10 @@ Turn text or files into **paper telegrams** — the filled-out form you would ha
 
 1. Type a message or open / drop any text file (or a `.cblf` document).
 2. Fill the blank: company line, To, From, Office, date; Paid/Collect check is optional.
-3. Optionally apply wire-desk wording (ALL CAPS, `STOP`, short abbreviations) for the body only.
+3. Choose a **wire style** for the body:
+   - **As written** — no rewrite  
+   - **Wire desk** — caps, `STOP`/`QUERY`, light abbreviations  
+   - **Period telegram** — commercial wire economy a real operator would bill by the word
 4. Preview the **paper form** live.
 5. If you opened a **`.cblf`**, edit and **Save** (⌘S) to overwrite that file. **Save As…** (⌘⇧S) writes a new document.
 6. Export as:

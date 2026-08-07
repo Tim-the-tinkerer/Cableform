@@ -190,10 +190,18 @@ struct ContentView: View {
             }
 
             Section("Message") {
-                Toggle("Wire-desk wording (STOP, caps, abbreviations)", isOn: $model.useWireStyle)
-                    .onChange(of: model.useWireStyle) { _ in
-                        if !suppressBodyRecompute { model.recomputeBody() }
+                Picker("Wire style", selection: $model.wireMode) {
+                    ForEach(WireMode.allCases) { mode in
+                        Text(mode.title).tag(mode)
                     }
+                }
+                .onChange(of: model.wireMode) { _ in
+                    if !suppressBodyRecompute { model.recomputeBody() }
+                }
+
+                Text(model.wireMode.detail)
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
 
                 TextEditor(text: $model.sourceText)
                     .font(.system(.body, design: .default))
@@ -202,7 +210,7 @@ struct ContentView: View {
                         if !suppressBodyRecompute { model.recomputeBody() }
                     }
 
-                if model.useWireStyle {
+                if model.wireMode != .plain {
                     LabeledContent("On paper") {
                         Text(model.bodyText.isEmpty ? "—" : model.bodyText)
                             .font(.system(.caption, design: .monospaced))

@@ -27,6 +27,9 @@ Custom paper-telegram container used by **Cableform**.
 - `notes` — freeform
 - `app` — always `"Cableform"`
 - `appVersion` — marketing version from the writing app’s `CFBundleShortVersionString`
+- `wireMode` — `"plain"`, `"desk"`, or `"period"` (period-accurate commercial telegram wording)
+
+Flags (u16): bit 0 = any wire rewrite; bit 1 = period mode (legacy readers may ignore bit 1).
 
 Body text is the paper message as displayed (after optional wire styling).
 Source text is the original unprocessed input.

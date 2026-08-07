@@ -13,7 +13,8 @@ struct TelegramModel: Equatable {
     var sourceText: String = ""
     /// Text drawn on the paper form.
     var bodyText: String = ""
-    var useWireStyle: Bool = true
+    /// How `sourceText` is converted into `bodyText`.
+    var wireMode: WireMode = .period
     var notes: String = ""
 
     enum PaidCollect: String, CaseIterable, Identifiable {
@@ -31,11 +32,7 @@ struct TelegramModel: Equatable {
     }
 
     mutating func recomputeBody() {
-        if useWireStyle {
-            bodyText = WireStyle.rewrite(sourceText)
-        } else {
-            bodyText = sourceText.trimmingCharacters(in: .whitespacesAndNewlines)
-        }
+        bodyText = WireStyle.rewrite(sourceText, mode: wireMode)
     }
 
     static func loadTextFile(from url: URL) throws -> String {

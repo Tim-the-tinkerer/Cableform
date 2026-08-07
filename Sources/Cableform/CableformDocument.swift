@@ -33,14 +33,17 @@ enum CableformDocument {
             "notes": model.notes,
             "app": "Cableform",
             "appVersion": appVersion,
+            "wireMode": model.wireMode.rawValue,
         ]
         if let check = model.paidCollect {
             meta["paidCollect"] = check.rawValue
         }
         let metaD = try JSONSerialization.data(withJSONObject: meta, options: [.sortedKeys])
 
+        // bit0 = any wire rewrite, bit1 = period-accurate mode
         var flags: UInt16 = 0
-        if model.useWireStyle { flags |= 1 }
+        if model.wireMode != .plain { flags |= 1 }
+        if model.wireMode == .period { flags |= 2 }
 
         var out = Data()
         out.reserveCapacity(headerSize + toD.count + fromD.count + officeD.count
@@ -120,7 +123,14 @@ enum CableformDocument {
         model.office = office
         model.bodyText = body
         model.sourceText = source.isEmpty ? body : source
-        model.useWireStyle = (flags & 1) != 0
+        // Flags fallback for pre-wireMode documents.
+        if (flags & 2) != 0 {
+            model.wireMode = .period
+        } else if (flags & 1) != 0 {
+            model.wireMode = .desk
+        } else {
+            model.wireMode = .plain
+        }
         model.filed = Date(timeIntervalSince1970: TimeInterval(created))
         model.paidCollect = nil
 
@@ -135,6 +145,9 @@ enum CableformDocument {
             if let pc = obj["paidCollect"] as? String,
                let parsed = TelegramModel.PaidCollect(rawValue: pc) {
                 model.paidCollect = parsed
+            }
+            if let wm = obj["wireMode"] as? String, let mode = WireMode(rawValue: wm) {
+                model.wireMode = mode
             }
             model.company = obj["company"] as? String ?? model.company
             model.notes = obj["notes"] as? String ?? ""
